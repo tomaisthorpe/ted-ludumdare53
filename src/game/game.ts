@@ -38,7 +38,7 @@ class GameState extends TGameState {
     const level = new Level(engine, this);
     this.addActor(level);
 
-    const player = new Player(engine, 850, 400);
+    const player = new Player(engine, this, 850, 400);
     this.addActor(player);
 
     const cameraController = new TFixedAxisCameraController({
