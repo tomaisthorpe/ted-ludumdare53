@@ -7,13 +7,21 @@ import {
   TSceneComponent,
   TSphereCollider,
   TSpriteLayer,
+  TTextureFilter,
 } from "@tedengine/ted";
 import playerTexture from "../assets/pigeon.png";
 import { vec3 } from "gl-matrix";
 
 export default class Player extends TPawn {
   public static resources: TResourcePackConfig = {
-    textures: [playerTexture],
+    textures: [
+      {
+        url: playerTexture,
+        config: {
+          filter: TTextureFilter.Nearest,
+        },
+      },
+    ],
   };
 
   constructor(engine: TEngine, x: number, y: number) {
@@ -29,8 +37,8 @@ export default class Player extends TPawn {
     const sprite = new TAnimatedSpriteComponent(
       engine,
       this,
-      16,
-      16,
+      32,
+      32,
       TOriginPoint.Center,
       TSpriteLayer.Foreground_0,
       {
