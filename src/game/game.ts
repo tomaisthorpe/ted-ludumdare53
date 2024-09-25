@@ -1,11 +1,21 @@
-import { TGameState, TEngine, TResourcePack } from "@tedengine/ted";
+import {
+  TGameState,
+  TEngine,
+  TResourcePack,
+  TOrthographicCamera,
+  TFixedAxisCameraController,
+} from "@tedengine/ted";
+import Level from "./level";
+import Player from "./player";
+import config from "./config";
+import { vec3 } from "gl-matrix";
 
 class GameState extends TGameState {
   public async onCreate(engine: TEngine) {
-    const rp = new TResourcePack(engine);
+    const rp = new TResourcePack(engine, Level.resources, Player.resources);
     await rp.load();
 
-    this.onReady();
+    this.onReady(engine);
   }
 
   public beforeWorldCreate() {
@@ -14,17 +24,44 @@ class GameState extends TGameState {
     this.world!.config.collisionClasses.push({
       name: "Player",
     });
+    this.world!.config.collisionClasses.push({
+      name: "Boundary",
+    });
   }
 
   public onUpdate() {}
-  public onReady() {}
+  public onReady(engine: TEngine) {
+    const camera = new TOrthographicCamera(engine);
+    this.activeCamera = camera;
+    this.addActor(camera);
+
+    const level = new Level(engine, this);
+    this.addActor(level);
+
+    const player = new Player(engine, 850, 400);
+    this.addActor(player);
+
+    const cameraController = new TFixedAxisCameraController({
+      distance: 20,
+      axis: "z",
+      bounds: {
+        min: vec3.fromValues(0, 300, 0),
+        max: vec3.fromValues(config.levelWidth, config.levelHeight, 0),
+      },
+      leadFactor: 0.5,
+      maxLead: 150,
+      lerpFactor: 0.9,
+    });
+    cameraController.attachTo(player.rootComponent);
+    camera.controller = cameraController;
+  }
 }
 
-const config = {
+const gameConfig = {
   states: {
     game: GameState,
   },
   defaultState: "game",
 };
 
-new TEngine(config, self);
+new TEngine(gameConfig, self);
