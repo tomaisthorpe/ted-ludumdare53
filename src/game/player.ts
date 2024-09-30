@@ -54,7 +54,7 @@ export default class Player extends TPawn implements TActorWithOnUpdate {
       {
         frameCount: 12,
         frameRate: 12,
-      },
+      }
     );
     sprite.applyTexture(engine, playerTexture);
 
@@ -92,7 +92,7 @@ export default class Player extends TPawn implements TActorWithOnUpdate {
 
     this.lastFlap = now;
     this.rootComponent.applyCentralImpulse(
-      vec3.fromValues(0, this.flapForce, 0),
+      vec3.fromValues(0, this.flapForce, 0)
     );
   }
 }

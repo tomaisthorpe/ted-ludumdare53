@@ -27,6 +27,7 @@ class Wall extends TActor {
     const box = new TSceneComponent(this, {
       mass: 0,
       fixedRotation: true,
+      friction: 0,
     });
     box.transform.translation = vec3.fromValues(
       x + width / 2,
@@ -67,12 +68,20 @@ export default class Level extends TActor {
     this.rootComponent.transform.translation = vec3.fromValues(0, 0, -100);
 
     state.addActor(
-      new Wall(-150, 900 - 19, config.levelWidth + 300, 19, "Solid")
+      new Wall(0, 900 - 19, config.levelWidth + 300, 19, "Boundary")
     );
-    state.addActor(new Wall(0, 0, config.levelWidth, 18, "Boundary"));
-    state.addActor(new Wall(0, 0, 20, config.levelHeight, "Boundary"));
+    state.addActor(new Wall(0, 0, config.levelWidth, 18, "Solid"));
     state.addActor(
-      new Wall(config.levelWidth - 20, 0, 20, config.levelHeight, "Boundary")
+      new Wall(-20, config.levelHeight, 20, config.levelHeight, "Boundary")
+    );
+    state.addActor(
+      new Wall(
+        config.levelWidth - 20,
+        config.levelHeight,
+        20,
+        config.levelHeight,
+        "Boundary"
+      )
     );
   }
 }

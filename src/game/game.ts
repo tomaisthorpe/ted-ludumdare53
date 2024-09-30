@@ -27,6 +27,8 @@ class GameState extends TGameState {
     this.world!.config.collisionClasses.push({
       name: "Boundary",
     });
+
+    this.world!.config.gravity = vec3.fromValues(0, -100, 0);
   }
 
   public onUpdate() {}
@@ -38,7 +40,7 @@ class GameState extends TGameState {
     const level = new Level(engine, this);
     this.addActor(level);
 
-    const player = new Player(engine, this, 850, 400);
+    const player = new Player(engine, this, 50, 400);
     this.addActor(player);
 
     const cameraController = new TFixedAxisCameraController({
@@ -48,7 +50,7 @@ class GameState extends TGameState {
         min: vec3.fromValues(0, 300, 0),
         max: vec3.fromValues(config.levelWidth, config.levelHeight, 0),
       },
-      leadFactor: 0.5,
+      // leadFactor: 0.5,
       maxLead: 150,
       lerpFactor: 0.9,
     });
