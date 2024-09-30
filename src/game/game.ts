@@ -40,15 +40,19 @@ class GameState extends TGameState {
     const level = new Level(engine, this);
     this.addActor(level);
 
-    const player = new Player(engine, this, 50, 400);
+    const player = new Player(engine, this, 850, 400);
     this.addActor(player);
 
     const cameraController = new TFixedAxisCameraController({
       distance: 20,
       axis: "z",
       bounds: {
-        min: vec3.fromValues(0, 300, 0),
-        max: vec3.fromValues(config.levelWidth, config.levelHeight, 0),
+        min: vec3.fromValues(400, 300, 0),
+        max: vec3.fromValues(
+          config.levelWidth - 400,
+          config.levelHeight - 300,
+          0
+        ),
       },
       // leadFactor: 0.5,
       maxLead: 150,
